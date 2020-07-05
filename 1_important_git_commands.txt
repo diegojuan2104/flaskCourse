@@ -1,0 +1,13 @@
+IMPORTANT GIT COMMANDS
+
+git Status
+git add . # track the files and add it to the staging area
+git commit -m"" 
+git remote add origin 
+git push
+git push --set-uptream origin master   #To ser the branch master,first push
+ssh-keygen #creates a private key to add in your github, and download a special repository which doesn't gonna ask for our account and password 
+git checkout -b <new_branch> #create a new branch
+git checkout <existing branch> change branch
+git merge <branch> #merge, join two branches 
+
