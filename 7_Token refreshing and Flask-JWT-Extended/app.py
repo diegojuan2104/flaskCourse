@@ -1,15 +1,16 @@
 from flask import Flask
 from flask_restful import Api
-from flask_jwt import JWT
+from flask_jwt_extended import JWTManager
 
 from security import authenticate, identity
-from resources.user import UserRegister,User
+from resources.user import UserRegister,User,UserLogin
 from resources.item import Item, ItemList
 from resources.store import Store,StoreList
 
 app = Flask(__name__) #This means that this it's the main doc where flask runs
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db' # To locate the db doc, and add sqlite,postgreSQL,Oracle whatever....
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['PROPAGATE_EXCEPTIONS'] = True
 api = Api(app) #Allow add Resources from flask Rest-full
 app.secret_key = '123456789123456789qwewqqwer'
 
@@ -17,16 +18,15 @@ app.secret_key = '123456789123456789qwewqqwer'
 def create_tables():
     db.create_all()
 
-jwt = JWT(app, authenticate, identity) # using URL/auth whit authenticate comfirm the user and password, and with identity returns the user token encripted 
-
+jwt = JWTManager(app) #JWTManager It's doesn't creating /auth endpoint
 #Add all the resources 
 api.add_resource(Item, '/item/<string:name>')
 api.add_resource(ItemList, '/items')
 api.add_resource(UserRegister,'/register')
 api.add_resource(StoreList,'/stores')
-api.add_resource(User,'/user/<int:user_id>')
 api.add_resource(Store,'/store/<string:name>')
-
+api.add_resource(User,'/user/<int:user_id>')
+api.add_resource(UserLogin,'/login')
 # Allows only run in app.py
 if __name__ == '__main__':
     from db import db 
